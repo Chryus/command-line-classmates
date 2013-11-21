@@ -18,8 +18,16 @@ attr_reader :html
 		names = html.search("h3").text.split
 	end
 
+
 	def get_blog_url
-		blog_url = html.search(".blog:href")
+		blog_array = []
+		19.times do |index|
+		#write code to extract url from html element href within class blog
+		blog_array << html.search("a.blog")[index]["href"]#.text.split(" ")
+		end
+	blog_array
+		# blog_array.each do |element|
+		# 	element[i]
 	end
 
 	def get_twitter_handle
