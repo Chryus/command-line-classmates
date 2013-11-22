@@ -14,23 +14,49 @@ attr_reader :html
 	end
 
 	#@html is an instance var, while "html" is a method that returns an instance var
-	def get_students_names
-		names = html.search("h3").text.split
+	 def get_names
+	 		names_array1 = []
+	 		names_array2 = []
+	 		names = html.search("h3")
+			names.each do |name|
+				#=> <h3>Amine Tourki</h3> as xml object
+				#convert name to string and push into names array
+				name = name.to_s
+				names_array1 << name
+			end
+			names_array1.each do |name_string|
+				#<h3>Amine Tourki</h3> as string
+				temp = name_string.gsub("<h3>", "    ").gsub("</h3>", "")
+				names_array2 << temp
+			end
+		names_array2
+	 end
+
+	#we refactored this, from using the times method to using the each method because
+	#you only call .times on a number
+	def get_blogs
+		blog_array = []
+		temp = (html.search("a.blog"))
+		temp.each do |blog_link|
+			#index is blog_link, for each index we are setting the value of blog_link["href"] to href
+			href = blog_link["href"]
+			#shovel href loval var to empty array
+			blog_array << href
+		end
+		blog_array
 	end
 
-
-	def get_blog_url
-		blog_array = []
-		19.times do |index|
 		#write code to extract url from html element href within class blog
-		blog_array << html.search("a.blog")[index]["href"]#.text.split(" ")
-		end
-	blog_array
+	# 	blog_array << html.search("a.blog")[index]["href"]
+	# 	end
+	# blog_array
+		#within a.blog array index 0, give us the value of href
+		#html.search("a.blog")[0]["href"]
 		# blog_array.each do |element|
 		# 	element[i]
-	end
+	
 
-	def get_twitter_handle
+	def get_twitter
 		new_array = []
 		twitter_handle = html.search("li a").text.split(" ")
 			twitter_handle.each do |element|
@@ -40,16 +66,26 @@ attr_reader :html
 			end
 		new_array
 	end
-
 end
 
-my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
+
+#we are moving these to app for separation of responsibilities
+#my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
 #puts my_scraper.html
-#puts my_scraper.get_students_names
-#puts my_scraper.get_twitter_handle
-puts my_scraper.get_blog_url
+#puts my_scraper.get_names
+#puts my_scraper.get_twitter
+#puts my_scraper.get_blogs
 
 
+
+
+	# def get_names
+	# 	names = html.search((".blog")
+	# 	all_the_h3s.collect do |h3|
+	# 		h3['href']
+	# 	end
+	# 	all_the_h3s
+	# end
 #we call "nokogiri" is a class, "HTML" class method is inside, we pass download to HTML method
 #HTML is a method that makes the file #<File:0x007fcb04057dd8> pretty and usable in ruby
 # class::class_method
@@ -57,4 +93,6 @@ puts my_scraper.get_blog_url
 #we store the return value of the method open in the var download
 #we keep it local because we're going to use it to create html instance var
 #.search is a nokogiri method
+
+#if someone doesn't have a twitter we need to code those conditions in the scraper
 
