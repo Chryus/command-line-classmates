@@ -12,6 +12,7 @@ attr_reader :html
 	end
 
 	#refactoring notes are in separate file scraper_refactoring-notes.rb
+	#i typed this out and defactored to my own cumbersome solution
 	def get_names
 	all_the_h3s = html.search("h3")
 		all_the_h3s.collect do |h3|
@@ -29,7 +30,7 @@ attr_reader :html
 				blog_array << "none"
 			end
 		end
-		ap blog_array
+		blog_array
 	end
 
 #borrowed from Katie to get the proper selector hierarchy but logic is mine. yay.
@@ -45,14 +46,14 @@ attr_reader :html
 				twitter_array << "none"
 			end
 		end
-		ap twitter_array
+		twitter_array
 	end
 	
 end
 
-my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
+#my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
 #puts my_scraper.html
 #puts my_scraper.get_names
-my_scraper.get_twitters
+#my_scraper.get_twitters
 #puts my_scraper.get_blogs
 
