@@ -1,7 +1,8 @@
-
 require 'awesome_print'
 require 'open-uri' #open the file on the internet
 require 'nokogiri' #nokogiri magic and methods 
+
+#refactoring notes are in separate file scraper_refactoring-notes.rb
 
 class Scraper
 attr_reader :html
@@ -11,49 +12,47 @@ attr_reader :html
 		@html = Nokogiri::HTML(download)
 	end
 
-	#refactoring notes are in separate file scraper_refactoring-notes.rb
-	#i typed this out and defactored to my own cumbersome solution
 	def get_names
-	all_the_h3s = html.search("h3")
-		all_the_h3s.collect do |h3|
-			h3.text
-		end
+		html.search("h3").collect { |h3| h3.text }
 	end
 
+	#refactored with collect!
 	def get_blogs
-		blog_array = []
-		html.search("ul.social").each do |anchor|
-			if anchor.search(".blog").text == "Blog"
-				#shovel the value of href into the blog array
-				blog_array << anchor.search(".blog")[0]["href"]
+		html.search(".back").collect do |elements|
+			if elements.search(".blog").text == "Blog"
+				elements.search(".blog")[0]["href"]
 			else
-				blog_array << "none"
+				"none"
 			end
 		end
-		blog_array
 	end
 
-#borrowed from Katie to get the proper selector hierarchy but logic is mine. yay.
 	def get_twitters
-		twitter_array = []
-		#split array into an array of strings separated by a space
-		social_array = html.search(".social li:first-child a").text.split(" ")
-		#iterate over every string in the array to find a match for "@" in index 0
-		social_array.each do |string|
-			if string[0] == "@"
-				twitter_array << string
+		html.search(".back").collect do |elements|
+			if elements.search(".twitter").text.include?("@")
+				elements.search(".twitter")[0]["href"]
 			else
-				twitter_array << "none"
+				"none"
 			end
 		end
-		twitter_array
 	end
-	
+
+# def get_twitters
+# 	twitter_array = html.search("li:first-child a").text.split(" ")
+# 	twitter_array.collect do |string|
+# 		if string[0] == "@"
+# 			string
+# 		else
+# 			"none"
+# 		end
+# 	end
+# end
+
 end
 
 #my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
 #puts my_scraper.html
 #puts my_scraper.get_names
-#my_scraper.get_twitters
-#puts my_scraper.get_blogs
+#ap my_scraper.get_twitters
+#ap my_scraper.get_blogs
 

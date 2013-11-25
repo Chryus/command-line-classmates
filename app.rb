@@ -6,33 +6,48 @@ require './lib/student.rb'
 require 'launchy'
 require 'awesome_print'
 
-#set local variables for accesssing names, twitters & blogs
 
-student_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
-names = student_scraper.get_names
-twitters = student_scraper.get_twitters
-blogs = student_scraper.get_blogs
-
-students = []
-28.times do |i|
-	students << Student.new(names[i], twitters[i], blogs[i])
-end
-
-ap names.gsub(',' ' ')
-
-def get_name
-	name = 0
-	until name.between?(1,27) && name.class == Fixnum
-		print "Here is a list of Flatiron geniuses. Whose blog would you like to see? (enter the number.) "
-		name = gets.chomp.to_i
-		if name.between?(1,27) == false
-			print "No I said enter a the student's number. "		
-		end
+	#set local variables for accesssing names, twitters & blogs
+	student_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
+	names = student_scraper.get_names
+	twitters = student_scraper.get_twitters
+	blogs = student_scraper.get_blogs
+	
+	#refactor to get rid of hard code
+	students = []
+	28.times do |i|
+		students << Student.new(names[i], twitters[i], blogs[i])
 	end
-	name - 2
+	students.collect!
+
+# 	students.collect! do |student|
+# 	student
+# end
+# end
+
+ #  		if student.blog == "none"
+ #  		student.name + ": sorry this student's blog is lost in the matrix."
+ #  		else
+	# 		student.name
+	#  end
+	# end
+
+ap students
+
+def get_name_id
+	name_id = 0
+	until name_id.between?(1,27) && name_id.class == Fixnum
+		print "Here is a list of Flatiron geniuses. Whose blog would you like to see? (enter the number.) "
+		name_id = gets.chomp.to_i
+		if name_id.between?(1,27) == false
+			print "No I said enter a the student's number. "		
+		end 
+	end
+	name_id
 end
 
-Launchy.open("#{students[get_name].blog}")
+Launchy.open("#{students[get_name_id].blog}")
+
 
 
 #Launchy.open("#{students[2].blog}")
