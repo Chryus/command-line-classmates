@@ -136,6 +136,24 @@ attr_reader :html
 	
 end
 
+	def get_blogs
+		face_back_array = []
+		temp = []
+		if html.search(".face back: first-child").nil?
+			face_back_array << element
+		face_back_array.each do |element|
+			if element.include?("social") == false
+				temp << element
+			end
+			# if anchor.search(".blog").text == "Blog"
+			# anchor.search(".blog")[0]["href"]
+			# else
+			# "none"
+			# end
+		end
+		temp
+	end
+	end
 
 #we are moving these to app for separation of responsibilities
 my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
