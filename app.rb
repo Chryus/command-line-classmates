@@ -12,54 +12,43 @@ names = student_scraper.get_names
 twitters = student_scraper.get_twitters
 blogs = student_scraper.get_blogs
 
-	
 #refactor to get rid of hard code
-
 	students = []
 	28.times do |i|
 		students << Student.new(names[i], twitters[i], blogs[i])
 	end
-	
-	ap students
 
-def launch_blog(students, names, twitters, blogs)
+def launch_blog(students, names, blogs)
 	ap names
-	print "Here is a list of Flatiron geniuses. Whose blog would you like to see? (enter the number.) "
+	print "Here's a list of Flatiron students. Enter the number of the blog you'd like to see. "
 	id = gets.chomp.to_i
-	#until id.between?(0,27) && id.class == Fixnum
-		if id.between?(0,27)
-			if blogs[id] == "none"
-				print "I'm sorry that student doesn't have a blog. "
-			else 
-				Launchy.open("#{students[id].blog}")
-			end
-		else
-			print "Nope. I said enter a the student's number. "
+	if id.between?(0,27)
+		if blogs[id] == "none"
+			print "I'm sorry that student doesn't have a blog. "
+		else 
+			Launchy.open("#{students[id].blog}")
 		end
-end
-
-launch_blog(students, names, twitters, blogs)
-
-def launch_twitter(names, students, twitters)
-	ap names
-	id = -1
-	until id.between?(0,27) && id.class == Fixnum
-		print "Here is a list of Flatiron geniuses. Whose twitter would you like to see? (enter the number.) "
-		id = gets.chomp.to_i
-		if id.between?(0,27) == false
-			print "Nope. I said enter a the student's number. "		
-		elsif twitters[id] == "none"
-			print "I'm sorry, that student doesn't have a twitter. "
-			id = -1
-		else
-			Launchy.open("#{students[id].twitter}")
-		end
+	else
+		print "Please try again. "
 	end
 end
 
-#launch_twitter(students, twitters)
+#launch_blog(students, names, blogs)
 
-#Launchy.open("#{students[launch_twitter].twitter}")
+def launch_twitter(names, students, twitters)
+	ap names
+	print "Here's a list of Flatiron students. Enter the number of the twitter you'd like to see. "
+	id = gets.chomp.to_i
+	if id.between?(0,27)
+		if twitters[id] == "none"
+			print "I'm sorry that student doesn't have a twitter. "
+		else 
+			Launchy.open("#{students[id].twitter}")
+		end
+	else
+		print "Please try again. "
+	end
+end
 
 def launch_random_twitter(students, twitters)
 	loops = true
@@ -71,9 +60,6 @@ def launch_random_twitter(students, twitters)
 	end
 end
 
-if "rt" 	
-#launch_random_twitter(students, twitters)
-
 def launch_random_blog(students, blogs)
 	loops = true
 	while loops 
@@ -84,32 +70,41 @@ def launch_random_blog(students, blogs)
 	end
 end
 
-if "rb"
+def ask_user(students, names, twitters, blogs)
+	loops = true
+	while loops
 
-#launch_random_blog(students, blogs)
+		print "\n""Hello. To launch a random student's blog, type 'rb'" "\n"
+		print "To launch a random student's twitter, type 'rt'" "\n"
+		print "To launch a specific student's blog, type 'sb'" "\n"
+		print "To launch a specific student's twitter, type 'st'" "\n"
+		answer = gets.chomp.downcase
+		if answer == "rt" 	
+			launch_random_twitter(students, twitters)
+			loops = false
+		#end
+		elsif answer == "rb"
+			launch_random_blog(students, blogs)
+			loops = false
+		#end
+		elsif answer == "sb"
+			launch_blog(students, names, blogs)	
+			loops = false
+		#end
+		elsif answer == "st"
+			launch_blog(students, names, twitters)
+			loops = false
+		else
+		 	print "That isn't an option."
+		end
+	end
+end
+ask_user(students, names, twitters, blogs)
+
 
 # Launchy.open("#{students[launch_blog].blog}")
 
 # Create an app launches a given student's twitter
-
-#future refactoring notes: 
-# students.collect! do |student|
-# if student.blog == "none"
-# student.name + ": sorry this student's blog is lost in the matrix."
-# else
-# student.name
-
-# def format_students(students)
-#   students.collect! do |student|
-# 		if student.blog == "none"
-#   		student.name + ": sorry this student's blog is lost in the matrix."
-# 		else
-# 	 		student.name
-# 		end
-# 	end
-# 	students
-# end
-# ap format_students(students)
 
 #Create an app that launches a given student's blog
 

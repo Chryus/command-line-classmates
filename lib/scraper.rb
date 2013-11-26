@@ -17,22 +17,22 @@ attr_reader :html
 		html.search("h3").collect { |h3| h3.text }
 	end
 
-	#refactored with collect!
-	def get_blogs
+		#refactored with collect!
+	def get_twitters
 		html.search(".back").collect do |elements|
-			if elements.search(".blog").text == "Blog"
-				elements.search(".blog")[0]["href"]
+			if elements.search(".twitter").text.include?("@")
+				elements.search(".twitter")[0]["href"]
 			else
 				"none"
 			end
 		end
 	end
 
-		#refactored with collect!
-	def get_twitters
+	#refactored with collect!
+	def get_blogs
 		html.search(".back").collect do |elements|
-			if elements.search(".twitter").text.include?("@")
-				elements.search(".twitter")[0]["href"]
+			if elements.search(".blog").text == "Blog"
+				elements.search(".blog")[0]["href"]
 			else
 				"none"
 			end
