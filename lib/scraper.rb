@@ -13,6 +13,7 @@ attr_reader :html
 	end
 
 	def get_names
+		#debugger
 		html.search("h3").collect { |h3| h3.text }
 	end
 
@@ -27,6 +28,7 @@ attr_reader :html
 		end
 	end
 
+		#refactored with collect!
 	def get_twitters
 		html.search(".back").collect do |elements|
 			if elements.search(".twitter").text.include?("@")
@@ -36,6 +38,8 @@ attr_reader :html
 			end
 		end
 	end
+
+
 
 # def get_twitters
 # 	twitter_array = html.search("li:first-child a").text.split(" ")

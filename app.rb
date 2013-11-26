@@ -11,6 +11,7 @@ student_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
 names = student_scraper.get_names
 twitters = student_scraper.get_twitters
 blogs = student_scraper.get_blogs
+
 	
 #refactor to get rid of hard code
 
@@ -19,28 +20,28 @@ blogs = student_scraper.get_blogs
 		students << Student.new(names[i], twitters[i], blogs[i])
 	end
 	
-
-def launch_blog(students, blogs)
 	ap students
-	id = -1
-	until id.between?(0,27) && id.class == Fixnum
-		print "Here is a list of Flatiron geniuses. Whose blog would you like to see? (enter the number.) "
-		id = gets.chomp.to_i
-		if id.between?(0,27) == false
-			print "Nope. I said enter a the student's number. "		
-		elsif blogs[id] == "none"
-			print "I'm sorry that student doesn't have a blog. "
-			id = -1
+
+def launch_blog(students, names, twitters, blogs)
+	ap names
+	print "Here is a list of Flatiron geniuses. Whose blog would you like to see? (enter the number.) "
+	id = gets.chomp.to_i
+	#until id.between?(0,27) && id.class == Fixnum
+		if id.between?(0,27)
+			if blogs[id] == "none"
+				print "I'm sorry that student doesn't have a blog. "
+			else 
+				Launchy.open("#{students[id].blog}")
+			end
 		else
-			Launchy.open("#{students[id].blog}")
+			print "Nope. I said enter a the student's number. "
 		end
-	end
 end
 
-#launch_blog(students, twitters)
+launch_blog(students, names, twitters, blogs)
 
-def launch_twitter(students, twitters)
-	ap students
+def launch_twitter(names, students, twitters)
+	ap names
 	id = -1
 	until id.between?(0,27) && id.class == Fixnum
 		print "Here is a list of Flatiron geniuses. Whose twitter would you like to see? (enter the number.) "
@@ -56,7 +57,7 @@ def launch_twitter(students, twitters)
 	end
 end
 
-launch_twitter(students, twitters)
+#launch_twitter(students, twitters)
 
 #Launchy.open("#{students[launch_twitter].twitter}")
 
@@ -70,6 +71,7 @@ def launch_random_twitter(students, twitters)
 	end
 end
 
+if "rt" 	
 #launch_random_twitter(students, twitters)
 
 def launch_random_blog(students, blogs)
@@ -81,6 +83,8 @@ def launch_random_blog(students, blogs)
 			loops = false
 	end
 end
+
+if "rb"
 
 #launch_random_blog(students, blogs)
 
