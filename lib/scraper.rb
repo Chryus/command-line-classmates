@@ -1,6 +1,7 @@
 require 'awesome_print'
 require 'open-uri' #open the file on the internet
 require 'nokogiri' #nokogiri magic and methods 
+require 'debugger'
 
 #refactoring notes are in separate file scraper_refactoring-notes.rb
 
@@ -15,6 +16,7 @@ attr_reader :html
 	def get_names
 		#debugger
 		html.search("h3").collect { |h3| h3.text }
+		#puts "x"
 	end
 
 		#refactored with collect!
@@ -39,7 +41,7 @@ attr_reader :html
 		end
 	end
 
-
+end
 
 # def get_twitters
 # 	twitter_array = html.search("li:first-child a").text.split(" ")
@@ -51,8 +53,6 @@ attr_reader :html
 # 		end
 # 	end
 # end
-
-end
 
 #my_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
 #puts my_scraper.html

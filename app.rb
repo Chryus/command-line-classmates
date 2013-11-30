@@ -6,18 +6,6 @@ require './lib/student.rb'
 require 'launchy'
 require 'awesome_print'
 
-#set local variables for accesssing names, twitters & blogs
-student_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
-names = student_scraper.get_names
-twitters = student_scraper.get_twitters
-blogs = student_scraper.get_blogs
-
-#refactor to get rid of hard code
-	students = []
-	28.times do |i|
-		students << Student.new(names[i], twitters[i], blogs[i])
-	end
-
 def launch_blog(students, names, blogs)
 	ap names
 	print "Here's a list of Flatiron students. Enter the number of the blog you'd like to see. "
@@ -33,12 +21,10 @@ def launch_blog(students, names, blogs)
 	end
 end
 
-#launch_blog(students, names, blogs)
-
-def launch_twitter(names, students, twitters)
+def launch_twitter(students, names, twitters)
 	ap names
 	print "Here's a list of Flatiron students. Enter the number of the twitter you'd like to see. "
-	id = gets.chomp.to_i
+	id = gets.chomp.to_i	
 	if id.between?(0,27)
 		if twitters[id] == "none"
 			print "I'm sorry that student doesn't have a twitter. "
@@ -50,7 +36,7 @@ def launch_twitter(names, students, twitters)
 	end
 end
 
-def launch_random_twitter(students, twitters)
+def launch_random_twitter(names, students, twitters)
 	loops = true
 	while loops 
 	id = rand(0..27)
@@ -73,7 +59,6 @@ end
 def ask_user(students, names, twitters, blogs)
 	loops = true
 	while loops
-
 		print "\n""Hello. To launch a random student's blog, type 'rb'" "\n"
 		print "To launch a random student's twitter, type 'rt'" "\n"
 		print "To launch a specific student's blog, type 'sb'" "\n"
@@ -92,13 +77,28 @@ def ask_user(students, names, twitters, blogs)
 			loops = false
 		#end
 		elsif answer == "st"
-			launch_blog(students, names, twitters)
+			launch_twitter(students, names, twitters)
 			loops = false
 		else
 		 	print "That isn't an option."
 		end
 	end
 end
+
+#this is the control code/driver code...separate this from the method.
+#set local variables for accesssing names, twitters & blogs
+student_scraper = Scraper.new("http://flatironschool-bk.herokuapp.com/")
+names = student_scraper.get_names
+twitters = student_scraper.get_twitters
+blogs = student_scraper.get_blogs
+
+#refactor to get rid of hard code
+#put this into a separate method.
+students = []
+28.times do |i|
+	students << Student.new(names[i], twitters[i], blogs[i])
+end
+
 ask_user(students, names, twitters, blogs)
 
 
